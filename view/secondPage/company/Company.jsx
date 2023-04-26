@@ -6,6 +6,7 @@ import {
 
 import styles from './company.style'
 import { icons } from '../../../constants'
+import { Rate } from '../../index'
 
 const Company = ({data}) => {
     console.log('')
@@ -36,7 +37,7 @@ const Company = ({data}) => {
             <View
                 style={styles.locationBox}
             >
-                <Image
+                {/*<Image
                     source={icons.location}
                     style={styles.locationImage}
                 />
@@ -44,7 +45,25 @@ const Company = ({data}) => {
                     style={styles.locationName}
                 >
                     {data.full_address}
+    </Text>*/}
+                <Text
+                    style={styles.locationName}
+                >
+                    {data.type}
                 </Text>
+                <View
+                    style={styles.rateContainer}
+                >
+                    <Rate
+                    rate={data.rating}
+                />
+                <Text
+                    style={styles.rate}
+                >
+                    {data.rating}
+                </Text>
+                </View>
+                
             </View>
         </View>
     </View>

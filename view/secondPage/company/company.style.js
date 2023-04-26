@@ -57,7 +57,20 @@ const styles = StyleSheet.create({
     color: COLORS.gray,
     fontFamily: FONT.regular,
     marginLeft: 2,
+    marginRight: 10,
+    width: "50%",
+    textAlign: "right",
   },
+  rate: {
+    fontSize: SIZES.medium - 2,
+    color: COLORS.gray,
+    fontFamily: FONT.regular,
+  },
+  rateContainer:{
+    flexDirection: "row",
+    width: "50%",
+    marginLeft: 10,
+  }
 });
 
 export default styles;

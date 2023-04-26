@@ -20,7 +20,7 @@ const Second = ({route, navigation}) => {
       headerShadowVisible: false,  
       headerLeft: () => (
             <ScreenHeader 
-                iconUrl={icons.arrow}
+                iconUrl={icons.arrowLeft}
                 handlePress={() =>{navigation.pop()}}
             />
         ),
@@ -52,7 +52,9 @@ const Second = ({route, navigation}) => {
             data={route.params.data}
           />
 
-          <BusinessTabs />
+          <BusinessTabs 
+            data={route.params.data}
+          />
         </View>
       </ScrollView>
     </SafeAreaView>
