@@ -1,7 +1,5 @@
 import { 
   View, 
-  Text, 
-  Button, 
   SafeAreaView,
   ScrollView
 } from 'react-native'
@@ -54,6 +52,7 @@ const Second = ({route, navigation}) => {
 
           <BusinessTabs 
             data={route.params.data}
+            navigation={navigation}
           />
         </View>
       </ScrollView>

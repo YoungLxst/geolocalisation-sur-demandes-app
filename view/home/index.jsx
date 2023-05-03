@@ -33,7 +33,7 @@ const Home = ({ navigation }) => {
         handlePress={() => {}}
       />
     )
-  });
+  })
 
   return (
     <SafeAreaView
@@ -52,7 +52,9 @@ const Home = ({ navigation }) => {
           <SearchBar 
             navigation={navigation}
           />
-          <Map />
+          <Map 
+            navigation={navigation}
+          />
           <NearbyBusiness 
             navigation={navigation}
             data = {data}

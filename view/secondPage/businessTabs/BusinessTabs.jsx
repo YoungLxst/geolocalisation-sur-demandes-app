@@ -7,9 +7,14 @@ import {
 
 import styles from './businessTabs.style'
 import { icons } from '../../../constants'
+import { JSONconvert } from '../..'
 
-const BusinessTabs = ({ data }) => {
+const BusinessTabs = ({ navigation, data }) => {
 
+  /**
+   * Get next hours
+   * @returns 
+   */
   function openOrClosed() {
     const date = new Date()
     const day = date.getDay()
@@ -152,7 +157,7 @@ const BusinessTabs = ({ data }) => {
           time = convertTimeArrayToJSON(data.working_hours.Tuesday)
           break
         case 3:
-          time = convertTimeArrayToJSON(data.working_hours.Wednesday) 
+          time = convertTimeArrayToJSON(data.working_hours.Wednesday)
           break
         case 4:
           time = convertTimeArrayToJSON(data.working_hours.Thursday)
@@ -164,8 +169,8 @@ const BusinessTabs = ({ data }) => {
           time = convertTimeArrayToJSON(data.working_hours.Saturday)
           break
         case 7:
-          time = convertTimeArrayToJSON(data.working_hours.Sunday)  
-          break 
+          time = convertTimeArrayToJSON(data.working_hours.Sunday)
+          break
       }
 
       for (let i = 0; i < time.time.length; i++) {
@@ -239,7 +244,7 @@ const BusinessTabs = ({ data }) => {
         let dayString
         switch (dayFound) {
           case 1:
-            dayString = 'Lun' 
+            dayString = 'Lun'
             break
           case 2:
             dayString = 'Mar'
@@ -266,55 +271,100 @@ const BusinessTabs = ({ data }) => {
     }
   }
 
+  convertPlaning = () => {
+    let planing = []
+    let i = 1
+    let tmp
 
-  return (
-    <View
-      style={styles.container}
-    >
-      <TouchableOpacity
-        style={styles.tabBox}
-        onPress={() => { }}
-      >
-        <Image
-          source={icons.location}
-          style={styles.icon(40)}
-        />
-        <Text
-          style={styles.info}
-        >
-          {data.full_address}
-        </Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.tabBox}
-        onPress={() => { }}
-      >
-        <Image
-          source={icons.time}
-          style={styles.icon(30)}
-        />
-        {openOrClosed()}
-        <Image
-          source={icons.arrowRight}
-          style={styles.arrow}
-        />
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.tabBox}
-        onPress={() => { }}
-      >
-        <Image
-          source={icons.call}
-          style={styles.icon(25)}
-        />
-        <Text
-          style={styles.info}
-        >
-          {data.phone_number}
-        </Text>
-      </TouchableOpacity>
-    </View>
-  )
-}
+    for (i; i <= 7; i++) {
+      let day = ''
+      switch (i) {
+        case 1:
+          day = 'Monday'
+          tmp = convertTimeArrayToJSON(data.working_hours.Monday)
+          break
+        case 2:
+          day = 'Tuesday'
+          tmp = convertTimeArrayToJSON(data.working_hours.Tuesday)
+          break
+        case 3:
+          day = 'Wednesday'
+          tmp = convertTimeArrayToJSON(data.working_hours.Wednesday)
+          break
+        case 4:
+          day = 'Thursday'
+          tmp = convertTimeArrayToJSON(data.working_hours.Thursday)
+          break
+        case 5:
+          day = 'Friday'
+          tmp = convertTimeArrayToJSON(data.working_hours.Friday)
+          break
+        case 6:
+          day = 'Saturday'
+          tmp = convertTimeArrayToJSON(data.working_hours.Saturday)
+          break
+        case 7:
+          day = 'Sunday'
+          tmp = convertTimeArrayToJSON(data.working_hours.Sunday)
+          break
+      }
+      planing.push(tmp)
+      
+    }
 
-export default BusinessTabs
+    return planing
+  }
+
+  convertPlaning()
+
+    return (
+      <View
+        style={styles.container}
+      >
+        <TouchableOpacity
+          style={styles.tabBox}
+          onPress={() => { }}
+        >
+          <Image
+            source={icons.location}
+            style={styles.icon(40)}
+          />
+          <Text
+            style={styles.info}
+          >
+            {data.full_address}
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.tabBox}
+          onPress={() =>  navigation.navigate('Planing', { data: convertPlaning() }) }
+        >
+          <Image
+            source={icons.time}
+            style={styles.icon(30)}
+          />
+          {openOrClosed()}
+          <Image
+            source={icons.arrowRight}
+            style={styles.arrow}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.tabBox}
+          onPress={() => { }}
+        >
+          <Image
+            source={icons.call}
+            style={styles.icon(25)}
+          />
+          <Text
+            style={styles.info}
+          >
+            {data.phone_number}
+          </Text>
+        </TouchableOpacity>
+      </View>
+    )
+  }
+
+  export default BusinessTabs
