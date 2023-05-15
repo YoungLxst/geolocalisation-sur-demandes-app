@@ -11,7 +11,6 @@ const Stack = createNativeStackNavigator()
 
 export default function App() {
 
-  //console.log(buisness.data[0].name)
   return (
     <NavigationContainer>
       <Stack.Navigator>

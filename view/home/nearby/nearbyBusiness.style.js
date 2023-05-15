@@ -26,6 +26,35 @@ const styles = StyleSheet.create({
     marginTop: SIZES.medium,
     gap: SIZES.small,
   },
+  dropdownContainer: {
+    height: 40,
+    width: 60,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  tabsContainer: {
+    alignItems: "center",
+    width: "100%",
+    marginTop: SIZES.medium,
+    backgroundColor : COLORS.lightWhite,
+    height: 50,
+    padding: 5,
+    borderRadius: SIZES.medium,
+  },
+  tab: (activeJobType, item) => ({
+    paddingVertical: SIZES.small / 2,
+    paddingHorizontal: SIZES.medium,
+    borderRadius: SIZES.small,
+    justifyContent: "center",
+    borderWidth: 1,
+    backgroundColor: activeJobType === item ? COLORS.primary : COLORS.lightWhite,
+    borderColor: COLORS.primary,
+  }),
+  tabText: (activeJobType, item) => ({
+    fontFamily: FONT.medium,
+    color: activeJobType === item ? COLORS.lightWhite : COLORS.primary,
+  }),
 });
 
 export default styles;

@@ -1,8 +1,9 @@
-import { View, TouchableOpacity, Dimensions } from 'react-native'
-import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps'
-//import Geolocation from '@react-native-community/geolocation'
+import { View, Text, Dimensions } from 'react-native'
+import MapView, { Callout, Marker, PROVIDER_GOOGLE } from 'react-native-maps'
 
 import styles from './map.style'
+import Rate from '../../common/rate/Rate'
+import useFetchLocation from '../../../hook/fetchLocation'
 
 const { width, height } = Dimensions.get('window')
 
@@ -11,47 +12,59 @@ const LATITUDE_DELTA = 0.02
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO
 
 
-const Map = ({navigation}) => {
-  /*const [position, setPosition] = useState({
-    latitude: 0,
-    longitude: 0,
-    latitudeDelta: LATITUDE_DELTA,
-    longitudeDelta: LONGITUDE_DELTA
-  })
+const Map = ({ navigation, data }) => {
+  const { location, error, locationIsLoading, refetchLocation } = useFetchLocation()
 
-  useEffect(() => {
-    Geolocation.getCurrentPosition((pos) => {
-      const crd = pos.coords;
-      setPosition({
-        latitude: crd.latitude,
-        longitude: crd.longitude,
-        latitudeDelta: LATITUDE_DELTA,
-        longitudeDelta: LONGITUDE_DELTA,
-      });
-    }).catch((err) => {
-      console.log(err);
-    });
-  }, []);
-*/
-  return (
+  return ( 
     <View
       style={styles.container}
-      //onPress={() => navigation.navigate('Map')}
+    //onPress={() => navigation.navigate('Map')}
     >
       <MapView
-        scrollEnabled={true}
+        initialRegion={locationIsLoading ? null : error ? null : {
+          latitude: location.latitude,
+          longitude: location.longitude,
+          latitudeDelta: LATITUDE_DELTA,
+          longitudeDelta: LONGITUDE_DELTA
+        }}
         provider={PROVIDER_GOOGLE}
         style={styles.map}
-        showsUserLocation={true} 
       >
-        <Marker 
-          coordinate={{
-            latitude: 48.8534,
-            longitude: 2.3488
-          }}
-          title="Paris"
-          description="La ville lumière"
-        />
+        {locationIsLoading ? null : error ? null : (
+          <Marker
+            coordinate={{ 
+              latitude: location.latitude,
+              longitude: location.longitude
+            }}
+            title="votre position"
+            pinColor='blue'
+          />
+        )}
+        {data?.map((item) => (
+          <Marker
+            coordinate={{
+              latitude: item.latitude,
+              longitude: item.longitude
+            }}
+            title={item.name}
+          >
+            <Callout 
+            tooltip
+            onPress={() => navigation.navigate('Second', {data: item
+            })}
+            >
+                <View
+                  style={styles.calloutContainer}>
+                  <Text>
+                    {item.name}
+                  </Text>
+                  <Rate
+                    rate={item.rating}
+                  />
+                </View>
+            </Callout>
+          </Marker>
+        ))}  
       </MapView>
     </View>
   )

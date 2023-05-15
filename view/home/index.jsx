@@ -54,6 +54,7 @@ const Home = ({ navigation }) => {
           />
           <Map 
             navigation={navigation}
+            data={data}
           />
           <NearbyBusiness 
             navigation={navigation}

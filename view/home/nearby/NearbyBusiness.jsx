@@ -1,23 +1,64 @@
+import { FC, useState } from 'react'
 import {
   View,
   Text,
   TouchableOpacity,
-  ActivityIndicator
+  ActivityIndicator,
+  FlatList
 } from 'react-native'
 
 import styles from './nearbyBusiness.style'
-import { COLORS } from '../../../constants'
+import { COLORS, SIZES } from '../../../constants'
 import NearbyBusinessCard from './nearbyBusinessCard/NearbyBusinessCard'
 
 const NearbyBusiness = ({ navigation, data }) => {
 
+  const [visible, setVisible] = useState(false)
+  const [activeType, setActivateType] = useState(null)
+
+  const toggleDropdown = () => {
+    setVisible(!visible)
+  }
+
   const isLoading = false
   const error = false
+  const tabs = ['note', 'distance', 'popularité']
+
+  const renderDropdown = () => {
+    
+
+    if (visible) {
+      return (
+        <View
+        style={styles.tabsContainer}
+      >
+        <FlatList
+          data={tabs}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              style={styles.tab(activeType, item)}
+              onPress={() => {
+                setActivateType(item)
+              }}
+            >
+              <Text
+                style={styles.tabText(activeType, item)}
+              >
+                {item}
+              </Text>
+            </TouchableOpacity>
+          )}
+          keyExtractor={item => item}
+          contentContainerStyle={{columnGap: SIZES.xSmall}}
+          horizontal
+        />
+      </View>
+      )
+    }
+  }
 
   return (
-    <View
-      style={styles.container}
-    >
+    <View>
       <View
         style={styles.header}
       >
@@ -26,15 +67,21 @@ const NearbyBusiness = ({ navigation, data }) => {
         >
           Nearby business
         </Text>
-        <TouchableOpacity>
-          <Text
-            style={styles.headerBtn}
+        <TouchableOpacity
+        onPress={toggleDropdown}
+        >
+          <View
+            style={styles.dropdownContainer}
           >
-            See all
-          </Text>
+              <Text
+                style={styles.headerBtn}
+              >trier par</Text>
+          </View>
+          
         </TouchableOpacity>
 
       </View>
+      {renderDropdown()}
       <View
         style={styles.cardsContainer}
       >
