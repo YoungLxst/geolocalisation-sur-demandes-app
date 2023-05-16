@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
   }),
   tabText: (activeJobType, item) => ({
     fontFamily: FONT.medium,
-    color: activeJobType === item ? COLORS.lightWhite : COLORS.primary,
+    color: activeJobType === item ? COLORS.lightWhite  : COLORS.primary,
   }),
 });
 

@@ -3,7 +3,7 @@ import MapView, { Callout, Marker, PROVIDER_GOOGLE } from 'react-native-maps'
 
 import styles from './map.style'
 import Rate from '../../common/rate/Rate'
-import useFetchLocation from '../../../hook/fetchLocation'
+//import useFetchLocation from '../../../hook/fetchLocation'
 
 const { width, height } = Dimensions.get('window')
 
@@ -12,8 +12,8 @@ const LATITUDE_DELTA = 0.02
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO
 
 
-const Map = ({ navigation, data }) => {
-  const { location, error, locationIsLoading, refetchLocation } = useFetchLocation()
+const Map = ({ navigation, data, locationIsLoading, error, location}) => {
+  //const { location, error, locationIsLoading, refetchLocation } = useFetchLocation()
 
   return ( 
     <View

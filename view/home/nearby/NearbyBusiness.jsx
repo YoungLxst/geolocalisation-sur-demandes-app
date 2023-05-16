@@ -11,7 +11,7 @@ import styles from './nearbyBusiness.style'
 import { COLORS, SIZES } from '../../../constants'
 import NearbyBusinessCard from './nearbyBusinessCard/NearbyBusinessCard'
 
-const NearbyBusiness = ({ navigation, data }) => {
+const NearbyBusiness = ({ navigation, data, location, locationIsLoading, locationError }) => {
 
   const [visible, setVisible] = useState(false)
   const [activeType, setActivateType] = useState(null)
@@ -25,35 +25,68 @@ const NearbyBusiness = ({ navigation, data }) => {
   const tabs = ['note', 'distance', 'popularité']
 
   const renderDropdown = () => {
-    
+
 
     if (visible) {
       return (
         <View
-        style={styles.tabsContainer}
-      >
-        <FlatList
-          data={tabs}
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              style={styles.tab(activeType, item)}
-              onPress={() => {
-                setActivateType(item)
-              }}
-            >
-              <Text
-                style={styles.tabText(activeType, item)}
+          style={styles.tabsContainer}
+        >
+          <FlatList
+            data={tabs}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                style={styles.tab(activeType, item)}
+                onPress={() => {
+                  setActivateType(item)
+                  sortData(item)
+                }}
               >
-                {item}
-              </Text>
-            </TouchableOpacity>
-          )}
-          keyExtractor={item => item}
-          contentContainerStyle={{columnGap: SIZES.xSmall}}
-          horizontal
-        />
-      </View>
+                <Text
+                  style={styles.tabText(activeType, item)}
+                >
+                  {item}
+                </Text>
+              </TouchableOpacity>
+            )}
+            keyExtractor={item => item}
+            contentContainerStyle={{ columnGap: SIZES.xSmall }}
+            horizontal
+          />
+        </View>
       )
+    }
+  }
+
+  const sortData = (item) => {
+    if (!isLoading && !error) {
+      if (item === 'note') {
+        data.sort((b, a) => {
+          return a.rating - b.rating
+        })
+      }
+      if (item === 'distance') { 
+        while (locationIsLoading) {
+          return <ActivityIndicator size="large" color={COLORS.primary} />
+        }
+        if (locationError) {
+          return <Text>error</Text>
+        }
+        data.sort((b, a) => {
+          let latA = location.latitude - a.latitude
+          let longA = location.longitude - a.longitude
+          let latB = location.latitude - b.latitude
+          let longB = location.longitude - b.longitude
+          let distanceA = Math.sqrt(latA * latA + longA * longA)
+          let distanceB = Math.sqrt(latB * latB + longB * longB)
+          return distanceB - distanceA
+        })
+      }
+      if (item === 'popularité') {
+        data.sort((b, a) => {
+          return a.review_count - b.review_count
+        })
+      }
     }
   }
 
@@ -68,16 +101,16 @@ const NearbyBusiness = ({ navigation, data }) => {
           Nearby business
         </Text>
         <TouchableOpacity
-        onPress={toggleDropdown}
+          onPress={toggleDropdown}
         >
           <View
             style={styles.dropdownContainer}
           >
-              <Text
-                style={styles.headerBtn}
-              >trier par</Text>
+            <Text
+              style={styles.headerBtn}
+            >trier par</Text>
           </View>
-          
+
         </TouchableOpacity>
 
       </View>
