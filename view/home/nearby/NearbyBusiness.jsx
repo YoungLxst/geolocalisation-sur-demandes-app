@@ -11,7 +11,7 @@ import styles from './nearbyBusiness.style'
 import { COLORS, SIZES } from '../../../constants'
 import NearbyBusinessCard from './nearbyBusinessCard/NearbyBusinessCard'
 
-const NearbyBusiness = ({ navigation, data, location, locationIsLoading, locationError }) => {
+const NearbyBusiness = ({ navigation, data, isLoadingData, errorData, location, locationIsLoading, locationError }) => {
 
   const [visible, setVisible] = useState(false)
   const [activeType, setActivateType] = useState(null)
@@ -20,8 +20,6 @@ const NearbyBusiness = ({ navigation, data, location, locationIsLoading, locatio
     setVisible(!visible)
   }
 
-  const isLoading = false
-  const error = false
   const tabs = ['note', 'distance', 'popularité']
 
   const renderDropdown = () => {
@@ -59,7 +57,7 @@ const NearbyBusiness = ({ navigation, data, location, locationIsLoading, locatio
   }
 
   const sortData = (item) => {
-    if (!isLoading && !error) {
+    if (!isLoadingData && errorData === null) {
       if (item === 'note') {
         data.sort((b, a) => {
           return a.rating - b.rating
@@ -118,10 +116,10 @@ const NearbyBusiness = ({ navigation, data, location, locationIsLoading, locatio
       <View
         style={styles.cardsContainer}
       >
-        {isLoading ? (
+        {isLoadingData === true ? (
           <ActivityIndicator size="large" color={COLORS.primary} />
-        ) : error ? (
-          <Text>error</Text>
+        ): errorData != null ? (
+          <Text>error: {errorData}</Text>
         ) : (
           data?.map((item) => (
             <NearbyBusinessCard

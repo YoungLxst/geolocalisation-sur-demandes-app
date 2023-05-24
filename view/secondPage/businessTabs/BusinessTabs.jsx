@@ -309,35 +309,36 @@ const BusinessTabs = ({ navigation, data }) => {
           break
       }
       planing.push(tmp)
-      
+
     }
 
     return planing
   }
 
-  convertPlaning()
+  data.working_hours != null ? convertPlaning() : null
 
-    return (
-      <View
-        style={styles.container}
+  return (
+    <View
+      style={styles.container}
+    >
+      <TouchableOpacity
+        style={styles.tabBox}
+        onPress={() => { }}
       >
-        <TouchableOpacity
-          style={styles.tabBox}
-          onPress={() => { }}
+        <Image
+          source={icons.location}
+          style={styles.icon(40)}
+        />
+        <Text
+          style={styles.info}
         >
-          <Image
-            source={icons.location}
-            style={styles.icon(40)}
-          />
-          <Text
-            style={styles.info}
-          >
-            {data.full_address}
-          </Text>
-        </TouchableOpacity>
+          {data.full_address}
+        </Text>
+      </TouchableOpacity>
+      {data.working_hours != null ? (
         <TouchableOpacity
           style={styles.tabBox}
-          onPress={() =>  navigation.navigate('Planing', { data: convertPlaning() }) }
+          onPress={() => navigation.navigate('Planing', { data: convertPlaning() })}
         >
           <Image
             source={icons.time}
@@ -349,22 +350,38 @@ const BusinessTabs = ({ navigation, data }) => {
             style={styles.arrow}
           />
         </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.tabBox}
-          onPress={() => { }}
+      ) : (
+        <View
+        style={styles.tabBox}
+      >
+        <Image
+          source={icons.time}
+          style={styles.icon(30)}
+        />
+        <Text
+          style={styles.info}
         >
-          <Image
-            source={icons.call}
-            style={styles.icon(25)}
-          />
-          <Text
-            style={styles.info}
-          >
-            {data.phone_number}
-          </Text>
-        </TouchableOpacity>
+          Horaires non renseignés
+        </Text>
       </View>
-    )
-  }
+        )}
 
-  export default BusinessTabs
+      <TouchableOpacity
+        style={styles.tabBox}
+        onPress={() => { }}
+      >
+        <Image
+          source={icons.call}
+          style={styles.icon(25)}
+        />
+        <Text
+          style={styles.info}
+        >
+          {data.phone_number != null ? data.phone_number : 'Numéro non renseigné'}
+        </Text>
+      </TouchableOpacity>
+    </View>
+  )
+}
+
+export default BusinessTabs
